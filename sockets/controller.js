@@ -1,17 +1,17 @@
-export const socketController = (socket) => {
+export const socketController = (client) => {
 
-    console.log('Client connected', socket.id);
+    console.log('Client connected', client.id);
     
-    socket.on('disconnect', () => {
-        console.log('Client disconnected', socket.id);
+    client.on('disconnect', () => {
+        console.log('Client disconnected', client.id);
     });
 
-    socket.on('enviar-mensaje', ( payload, callback ) => {
+    client.on('enviar-mensaje', ( payload, callback ) => {
 
         const id = 123456;
         callback( id );
 
-        socket.broadcast.emit('enviar-mensaje', payload);
+        client.broadcast.emit('enviar-mensaje', payload);
     
     });
 }
