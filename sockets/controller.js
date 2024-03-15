@@ -21,7 +21,15 @@ export const socketController = (client = new Socket(), io) => {
 
        let personas = usuarios.agregarPersona(client.id, usuario.nombre);
 
+       client.broadcast.emit('listaPersonas', usuarios.getPeronas());
        callback(personas);
+    })
+
+    client.on('disconnect', () => {
+        let personaBorrada = usuarios.borrarPersona(client.id);
+        
+        client.broadcast.emit('crearMensaje', {usuario: 'Administrador', mensaje: `${personaBorrada.nombre} a abandonado el chat`});
+        client.broadcast.emit('listaPersonas', usuarios.getPeronas());
     })
 
 }
