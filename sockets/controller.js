@@ -21,12 +21,13 @@ export const socketController = (client = new Socket(), io) => {
             });
         }
 
-        client.join(usuario.sala)
+        client.join(usuario.sala);
 
-       let personas = usuarios.agregarPersona(client.id, usuario.nombre, usuarios.sala );
+      usuarios.agregarPersona(client.id, usuario.nombre, usuario.sala );
 
-       client.broadcast.emit('listaPersonas', usuarios.getPeronas());
-       callback(personas);
+       client.broadcast.to(usuario.sala).emit('listaPersonas', usuarios.getPersonasPorSala(usuario.sala));
+
+       callback(usuarios.getPersonasPorSala(usuario.sala));
     })
 
     client.on('crearMensaje', (data) => {
@@ -34,15 +35,15 @@ export const socketController = (client = new Socket(), io) => {
         let persona = usuarios.getPersona(client.id)
 
         let mensaje = crearMensaje(persona, data.mensaje);
-        client.broadcast.emit('crearMensaje', mensaje);
+        client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
     });
 
 
     client.on('disconnect', () => {
         let personaBorrada = usuarios.borrarPersona(client.id);
         
-        client.broadcast.emit('crearMensaje', crearMensaje('Adminitrados', `${personaBorrada.nombre} Salió `));
-        client.broadcast.emit('listaPersonas', usuarios.getPeronas());
+        client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje('Adminitrados', `${personaBorrada.nombre} Salió `));
+        client.broadcast.to(personaBorrada.sala).emit('listaPersonas', usuarios.getPersonasPorSala(personaBorrada.sala));
     });
 
 
