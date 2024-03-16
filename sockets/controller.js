@@ -1,6 +1,8 @@
 import Usuarios  from '../classes/usuarios.js'
+import { crearMensaje } from '../utilidades/utilidades.js';
 
 const usuarios = new Usuarios(); // solo se ejecuta cuando el servidor se levanta
+
 
 export const socketController = (client = new Socket(), io) => {
 
@@ -25,10 +27,19 @@ export const socketController = (client = new Socket(), io) => {
        callback(personas);
     })
 
+    client.on('crearMensaje', (data) => {
+
+        let persona = usuarios.getPersona(client.id)
+
+        let mensaje = crearMensaje(persona, data.mensaje);
+        client.broadcast.emit('crearMensaje', mensaje);
+    });
+
+
     client.on('disconnect', () => {
         let personaBorrada = usuarios.borrarPersona(client.id);
         
-        client.broadcast.emit('crearMensaje', {usuario: 'Administrador', mensaje: `${personaBorrada.nombre} a abandonado el chat`});
+        client.broadcast.emit('crearMensaje', crearMensaje('Adminitrados', `${personaBorrada.nombre} Salió `));
         client.broadcast.emit('listaPersonas', usuarios.getPeronas());
     })
 
