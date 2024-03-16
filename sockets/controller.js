@@ -41,6 +41,17 @@ export const socketController = (client = new Socket(), io) => {
         
         client.broadcast.emit('crearMensaje', crearMensaje('Adminitrados', `${personaBorrada.nombre} Salió `));
         client.broadcast.emit('listaPersonas', usuarios.getPeronas());
-    })
+    });
+
+
+    //mensajes Privados
+    client.on('mensajePrivado', data => {
+
+        let persona = usuarios.getPerona(client.id)
+
+        client.broadcast.to(data.para).emit('mensajePrivado', crearMensaje(persona.nombre, data.mensaje));
+        
+
+    });
 
 }
