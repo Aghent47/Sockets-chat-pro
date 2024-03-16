@@ -14,14 +14,16 @@ export const socketController = (client = new Socket(), io) => {
 
     client.on('entrarChat', (usuario, callback) => {
 
-        if( !usuario.nombre ){
+        if( !usuario.nombre || !usuario.sala ){
             return callback({
                 error: true,
-                mensaje: 'El nombre es necesario'
+                mensaje: 'El nombre/sala es necesario'
             });
         }
 
-       let personas = usuarios.agregarPersona(client.id, usuario.nombre);
+        client.join(usuario.sala)
+
+       let personas = usuarios.agregarPersona(client.id, usuario.nombre, usuarios.sala );
 
        client.broadcast.emit('listaPersonas', usuarios.getPeronas());
        callback(personas);
