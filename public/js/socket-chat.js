@@ -47,7 +47,7 @@ socket.on('crearMensaje', function(mensaje) {
 
 // Escuchar cambios de usuarios
 // cuando un usuario entra o sale del chat
-socket.on('listaPersona', function(personas) {
+socket.on('listaPersonas', function(personas) {
     renderizarUsuarios(personas);
 });
 
