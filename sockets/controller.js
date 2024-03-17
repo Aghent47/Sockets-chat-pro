@@ -30,12 +30,14 @@ export const socketController = (client = new Socket(), io) => {
        callback(usuarios.getPersonasPorSala(usuario.sala));
     })
 
-    client.on('crearMensaje', (data) => {
+    client.on('crearMensaje', (data, callback) => {
 
         let persona = usuarios.getPersona(client.id)
 
         let mensaje = crearMensaje(persona, data.mensaje);
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
+
+        callback( mensaje );
     });
 
 
