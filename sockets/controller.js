@@ -26,7 +26,7 @@ export const socketController = (client = new Socket(), io) => {
       usuarios.agregarPersona(client.id, usuario.nombre, usuario.sala );
 
        client.broadcast.to(usuario.sala).emit('listaPersonas', usuarios.getPersonasPorSala(usuario.sala));
-
+       client.broadcast.to(usuario.sala).emit('crearMensaje', crearMensaje('Adminitrados', `${usuario.nombre} Se unió `));
        callback(usuarios.getPersonasPorSala(usuario.sala));
     })
 
@@ -36,7 +36,6 @@ export const socketController = (client = new Socket(), io) => {
 
         let mensaje = crearMensaje(persona, data.mensaje);
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
-
         callback( mensaje );
     });
 
