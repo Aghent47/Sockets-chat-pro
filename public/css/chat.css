@@ -1,9 +1,136 @@
 .chat-list {
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    height: 600px !important;
+    height: calc(100vh - 250px) !important;
+    scroll-behavior: smooth;
+    padding-bottom: 20px;
+}
+
+.chat-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary, #f7fafc);
+    border-radius: 3px;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+    background: var(--primary-color, #667eea);
+    border-radius: 3px;
+}
+
+.chat-list::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color, #4facfe);
 }
 
 textarea {
     width: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+/* Enhanced message styles */
+.chat-list li {
+    margin-bottom: 15px;
+    animation: slideInMessage 0.3s ease-out;
+}
+
+@keyframes slideInMessage {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modern message bubbles */
+.box {
+    position: relative;
+    max-width: 70%;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+}
+
+.chat-list li:not(.reverse) .box::before {
+    left: -16px;
+    border-right-color: var(--bg-secondary, #f7fafc);
+    transform: translateY(-50%);
+}
+
+.chat-list li.reverse .box::before {
+    right: -16px;
+    border-left-color: var(--primary-color, #667eea);
+    transform: translateY(-50%);
+}
+
+/* User avatar styles */
+.chat-img img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color, #e2e8f0);
+    transition: all var(--transition-medium, 0.3s ease-in-out);
+}
+
+.chat-img img:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color, #667eea);
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-secondary, #718096);
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 3px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--primary-color, #667eea);
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
 }

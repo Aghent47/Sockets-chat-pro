@@ -17,6 +17,8 @@
     <link href="css/pages/login-register-lock.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
+    <!-- Modern Login CSS -->
+    <link href="css/modern-login.css" rel="stylesheet">
 
     <!-- You can change the theme colors from here -->
     <link href="css/colors/default-dark.css" id="theme" rel="stylesheet">
@@ -42,27 +44,58 @@
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <section id="wrapper">
-        <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
-            <div class="login-box card">
+        <!-- Geometric Background -->
+        <div class="geometric-bg">
+            <div class="geometric-shape shape-1"></div>
+            <div class="geometric-shape shape-2"></div>
+            <div class="geometric-shape shape-3"></div>
+            <div class="geometric-shape shape-4"></div>
+        </div>
+        
+        <div class="login-register modern-login-container">
+            <!-- Dark Mode Toggle -->
+            <div class="dark-mode-toggle">
+                <button id="darkModeToggle" class="toggle-btn">
+                    <i class="fa fa-moon-o"></i>
+                </button>
+            </div>
+            
+            <div class="login-box modern-card">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" action="chat.html">
-                        <h3 class="box-title m-b-20">Ingresar al Chat</h3>
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Nombre de usuario" name="nombre"> </div>
+                    <div class="login-header">
+                        <div class="logo-container">
+                            <div class="logo-icon">
+                                <i class="fa fa-comments"></i>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Sala de chat" name="sala"> </div>
+                        <h3 class="login-title">Bienvenido al Chat</h3>
+                        <p class="login-subtitle">Conecta con otros usuarios en tiempo real</p>
+                    </div>
+                    
+                    <form class="modern-form" id="loginform" action="chat.html">
+                        <div class="form-group modern-input-group">
+                            <div class="input-container">
+                                <i class="fa fa-user input-icon"></i>
+                                <input class="modern-input" type="text" required="" placeholder="Nombre de usuario" name="nombre">
+                                <div class="input-focus-border"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group modern-input-group">
+                            <div class="input-container">
+                                <i class="fa fa-hashtag input-icon"></i>
+                                <input class="modern-input" type="text" required="" placeholder="Sala de chat" name="sala">
+                                <div class="input-focus-border"></div>
+                            </div>
                         </div>
 
                         <div class="form-group text-center">
-                            <div class="col-xs-12 p-b-20">
-                                <button class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Ingresar al chat</button>
-                            </div>
+                            <button class="modern-btn" type="submit">
+                                <span class="btn-text">Ingresar al chat</span>
+                                <div class="btn-ripple"></div>
+                            </button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -85,6 +118,54 @@
         });
         $(function() {
             $('[data-toggle="tooltip"]').tooltip()
+        });
+        
+        // Dark Mode Toggle
+        $(document).ready(function() {
+            const darkModeToggle = $('#darkModeToggle');
+            const body = $('body');
+            
+            // Check for saved theme preference or default to light mode
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            if (currentTheme === 'dark') {
+                body.addClass('dark-mode');
+                darkModeToggle.find('i').removeClass('fa-moon-o').addClass('fa-sun-o');
+            }
+            
+            darkModeToggle.on('click', function() {
+                body.toggleClass('dark-mode');
+                const isDark = body.hasClass('dark-mode');
+                
+                if (isDark) {
+                    localStorage.setItem('theme', 'dark');
+                    darkModeToggle.find('i').removeClass('fa-moon-o').addClass('fa-sun-o');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    darkModeToggle.find('i').removeClass('fa-sun-o').addClass('fa-moon-o');
+                }
+            });
+            
+            // Add ripple effect to button
+            $('.modern-btn').on('click', function(e) {
+                const button = $(this);
+                const ripple = button.find('.btn-ripple');
+                
+                const rect = button[0].getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.css({
+                    width: size + 'px',
+                    height: size + 'px',
+                    left: x + 'px',
+                    top: y + 'px'
+                }).addClass('ripple-animate');
+                
+                setTimeout(() => {
+                    ripple.removeClass('ripple-animate');
+                }, 600);
+            });
         });
     </script>
 
