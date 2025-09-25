@@ -1,0 +1,5 @@
+# Redirect all requests to index.html for SPA
+/*    /index.html   200
+
+# Socket.IO redirects
+/socket.io/*    /.netlify/functions/server    200
