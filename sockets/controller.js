@@ -26,7 +26,7 @@ export const socketController = (client = new Socket(), io) => {
       usuarios.agregarPersona(client.id, usuario.nombre, usuario.sala );
 
        client.broadcast.to(usuario.sala).emit('listaPersonas', usuarios.getPersonasPorSala(usuario.sala));
-       client.broadcast.to(usuario.sala).emit('crearMensaje', crearMensaje('Adminitrados', `${usuario.nombre} Se unió `));
+       client.broadcast.to(usuario.sala).emit('crearMensaje', crearMensaje('Administrador', `${usuario.nombre} Se unió `));
        callback(usuarios.getPersonasPorSala(usuario.sala));
     })
 
@@ -34,7 +34,7 @@ export const socketController = (client = new Socket(), io) => {
 
         let persona = usuarios.getPersona(client.id)
 
-        let mensaje = crearMensaje(persona, data.mensaje);
+        let mensaje = crearMensaje(persona.nombre, data.mensaje);
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
         callback( mensaje );
     });
@@ -43,7 +43,7 @@ export const socketController = (client = new Socket(), io) => {
     client.on('disconnect', () => {
         let personaBorrada = usuarios.borrarPersona(client.id);
         
-        client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje('Adminitrados', `${personaBorrada.nombre} Salió `));
+        client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje('Administrador', `${personaBorrada.nombre} Salió `));
         client.broadcast.to(personaBorrada.sala).emit('listaPersonas', usuarios.getPersonasPorSala(personaBorrada.sala));
     });
 
@@ -51,7 +51,7 @@ export const socketController = (client = new Socket(), io) => {
     //mensajes Privados
     client.on('mensajePrivado', data => {
 
-        let persona = usuarios.getPerona(client.id)
+        let persona = usuarios.getPersona(client.id)
 
         client.broadcast.to(data.para).emit('mensajePrivado', crearMensaje(persona.nombre, data.mensaje));
         

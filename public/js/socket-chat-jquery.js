@@ -37,7 +37,7 @@ function renderizarMensajes(mensaje, miMensaje) {
     var hora = fecha.getHours() + ':' + fecha.getMinutes();
 
     var adminClass = 'info';
-    if(usuario.nombre === 'Administrador'){
+    if(mensaje.nombre === 'Administrador'){
         adminClass= 'danger'
     }
 
@@ -56,14 +56,14 @@ function renderizarMensajes(mensaje, miMensaje) {
 
     } else {
         html += '<li class="animed fadeIn" > '
-        if(usuario.nombre !== 'Administrador') {
+        if(mensaje.nombre !== 'Administrador') {
             html += '    <div class="chat-img">'
             html += '        <img src="assets/images/users/1.jpg" alt="user" />'
             html += '    </div>'
         }
       
         html += '    <div class="chat-content">'
-        html += '        <h5>' + usuario.nombre + '</h5>'
+        html += '        <h5>' + mensaje.nombre + '</h5>'
         html += '        <div class="box bg-light-'+adminClass+'">' + mensaje.mensaje + '</div>'
         html += '    </div>'
         html += '    <div class="chat-time">' + hora + '</div>'
