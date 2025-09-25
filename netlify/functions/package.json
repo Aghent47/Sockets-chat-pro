@@ -1,0 +1,12 @@
+{
+  "name": "netlify-functions",
+  "version": "1.0.0",
+  "description": "Netlify Functions for Socket.IO Chat",
+  "main": "server.js",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.16.3",
+    "cors": "^2.8.5",
+    "socket.io": "^4.7.4"
+  }
+}
