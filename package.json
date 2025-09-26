@@ -8,7 +8,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node app.js",
         "build": "echo 'Build completed' && exit 0",
-        "dev": "nodemon app.js"
+        "dev": "nodemon app.js",
+        "vercel-build": "echo 'Vercel build completed'"
     },
     "author": "",
     "license": "ISC",
