@@ -27,7 +27,12 @@ export class SocketServer {
     middlewares() {
 
         // CORS
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: process.env.NODE_ENV === 'production' ? 
+                process.env.VERCEL_URL || true : 
+                ['http://localhost:3000', 'http://localhost:5000'],
+            credentials: true
+        }));
 
         // Public directory
         this.app.use(express.static('public'));
@@ -35,6 +40,20 @@ export class SocketServer {
     }
 
     routes() {
+        // Health check endpoint
+        this.app.get('/health', (req, res) => {
+            res.json({ 
+                status: 'OK', 
+                timestamp: new Date().toISOString(),
+                uptime: process.uptime()
+            });
+        });
+
+        // Serve index.html for root route
+        this.app.get('/', (req, res) => {
+            res.sendFile('index.html', { root: 'public' });
+        });
+        
         // this.app.use( this.paths.auth, auth),
     }
 
